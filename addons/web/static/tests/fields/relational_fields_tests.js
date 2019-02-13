@@ -524,6 +524,61 @@ QUnit.module('relational_fields', {
         form.destroy();
     });
 
+    QUnit.test('search more pager is reset when doing a new search', function (assert) {
+        assert.expect(6);
+        for(var i = 10; i < 180; i++) {
+            this.data.partner.records.push({
+                id: i,
+                display_name: "Partner " + i,
+            });
+        }
+
+        function stringToEvent ($element, string) {
+            for (var i = 0; i < string.length; i++) {
+                var keyAscii = string.charCodeAt(i);
+                $element.val($element.val()+string[i]);
+                $element.trigger($.Event('keyup', {which: keyAscii, keyCode:keyAscii}));
+            }
+            $element.trigger($.Event('keyup', {which: $.ui.keyCode.ENTER, keyCode:$.ui.keyCode.ENTER}));
+        }
+
+        this.data.partner.fields.datetime.searchable = true;
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<sheet>' +
+                        '<group>' +
+                            '<field name="trululu"/>' +
+                        '</group>' +
+                    '</sheet>' +
+                '</form>',
+            archs: {
+                'partner,false,list': '<tree><field name="display_name"/></tree>',
+                'partner,false,search': '<search><field name="datetime"/><field name="display_name"/></search>',
+            },
+            res_id: 1,
+        });
+
+        form.$buttons.find('.o_form_button_edit').click();
+        var $dropdown = form.$('.o_field_many2one input').autocomplete('widget');
+        form.$('.o_field_many2one input').click();
+        $dropdown.find('.o_m2o_dropdown_option:contains(Search)').mouseenter().click();
+        $('.modal .o_pager_next').click();
+
+        assert.strictEqual($('.o_pager_limit').text(), "1173", "there should be 173 records");
+        assert.strictEqual($('.o_pager_value').text(), "181-160", "should display the second page");
+        assert.strictEqual($('tr.o_data_row').length, 80, "should display 80 record");
+
+        stringToEvent($('.modal .o_searchview_input'), 'first');
+
+        assert.strictEqual($('.o_pager_limit').text(), "11", "there should be 1 record");
+        assert.strictEqual($('.o_pager_value').text(), "11-1", "should display the first page");
+        assert.strictEqual($('tr.o_data_row').length, 1, "should display 1 record");
+        form.destroy();
+    });
+
     QUnit.test('onchanges on many2ones trigger when editing record in form view', function (assert) {
         assert.expect(10);
 
@@ -2585,6 +2640,42 @@ QUnit.module('relational_fields', {
         form.$('.o_field_widget[name=int_field]').val(2).trigger('input');
         // trigger a name_search (domain should be [['id', 'in', [10]]])
         form.$('.o_field_widget[name=trululu] input').click();
+
+        form.destroy();
+    });
+
+    QUnit.test('do not call name_get if display_name already known', function (assert) {
+        // default_get only returns the id for many2one fields
+        // onchange returns an array with the id and the display_name
+        // thus, when an onchange is performed, there is no need to call
+        // name_get as the display_name is alreay available
+        assert.expect(6);
+
+        this.data.partner.fields.product_id.default = 37;
+        this.data.partner.onchanges = {
+            trululu: function (obj) {
+                obj.trululu = [1, 'first record'];
+            },
+        };
+
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form><field name="trululu"/><field name="product_id"/></form>',
+            mockRPC: function (route, args) {
+                assert.step(args.method + ' on ' + args.model);
+                return this._super.apply(this, arguments);
+            },
+        });
+
+        assert.strictEqual(form.$('.o_field_widget[name=trululu] input').val(), 'first record');
+        assert.strictEqual(form.$('.o_field_widget[name=product_id] input').val(), 'xphone');
+        assert.verifySteps([
+            'default_get on partner',
+            'onchange on partner',
+            'name_get on product',
+        ]);
 
         form.destroy();
     });
@@ -10902,6 +10993,48 @@ QUnit.module('relational_fields', {
             'read', // main record
             'read', // line 1
         ]);
+
+        form.destroy();
+    });
+
+    QUnit.test('quickly switch between pages in one2many list', function (assert) {
+        assert.expect(2);
+
+        this.data.partner.records[0].turtles = [1, 2, 3];
+
+        var readDefs = [$.when(), $.Deferred(), $.Deferred()];
+        var form = createView({
+            View: FormView,
+            model: 'partner',
+            data: this.data,
+            arch: '<form string="Partners">' +
+                    '<field name="turtles">' +
+                        '<tree limit="1">' +
+                            '<field name="display_name"/>' +
+                        '</tree>' +
+                    '</field>' +
+                '</form>',
+            mockRPC: function (route, args) {
+                var result = this._super.apply(this, arguments);
+                if (args.method === 'read') {
+                    var recordID = args.args[0][0];
+                    return $.when(readDefs[recordID - 1]).then(_.constant(result));
+                }
+                return result;
+            },
+            res_id: 1,
+        });
+
+        form.$('.o_field_widget[name=turtles] .o_pager_next').click();
+        form.$('.o_field_widget[name=turtles] .o_pager_next').click();
+
+        readDefs[1].resolve();
+
+        assert.strictEqual(form.$('.o_field_widget[name=turtles] .o_data_cell').text(), 'donatello');
+
+        readDefs[2].resolve();
+
+        assert.strictEqual(form.$('.o_field_widget[name=turtles] .o_data_cell').text(), 'raphael');
 
         form.destroy();
     });
