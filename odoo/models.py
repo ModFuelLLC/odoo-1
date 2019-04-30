@@ -2381,6 +2381,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
         cr = self._cr
         update_custom_fields = self._context.get('update_custom_fields', False)
         must_create_table = not tools.table_exists(cr, self._table)
+        parent_path_compute = False
 
         if self._auto:
             if must_create_table:
@@ -2389,6 +2390,7 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
             if self._parent_store:
                 if not tools.column_exists(cr, self._table, 'parent_path'):
                     self._create_parent_columns()
+                    parent_path_compute = True
 
             self._check_removed_columns(log=False)
 
@@ -2416,6 +2418,9 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
 
         if must_create_table:
             self._execute_sql()
+
+        if parent_path_compute:
+            self._parent_store_compute()
 
     @api.model_cr
     def init(self):
@@ -4242,11 +4247,12 @@ class BaseModel(MetaModel('DummyModel', (object,), {'_register': False})):
                     if vals['lang'] == old.env.lang and field.translate is True:
                         # force a source if the new_val was not changed by copy override
                         if new_val == old[name]:
-                            vals['source'] = old_wo_lang[name]
+                            new_wo_lang[name] = old_wo_lang[name]
+                            vals['src'] = old_wo_lang[name]
                         # the value should be the new value (given by copy())
                         vals['value'] = new_val
                     vals_list.append(vals)
-                Translation.create(vals_list)
+                Translation._upsert_translations(vals_list)
 
     @api.multi
     @api.returns('self', lambda value: value.id)

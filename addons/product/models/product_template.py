@@ -326,6 +326,12 @@ class ProductTemplate(models.Model):
             raise ValidationError(_('The default Unit of Measure and the purchase Unit of Measure must be in the same category.'))
         return True
 
+    @api.constrains('attribute_line_ids')
+    def _check_attribute_line(self):
+        if any(len(template.attribute_line_ids) != len(template.attribute_line_ids.mapped('attribute_id')) for template in self):
+            raise ValidationError(_('You cannot define two attribute lines for the same attribute.'))
+        return True
+
     @api.onchange('uom_id')
     def _onchange_uom_id(self):
         if self.uom_id:
@@ -497,6 +503,7 @@ class ProductTemplate(models.Model):
                         variants_to_create.append({
                             'product_tmpl_id': tmpl_id.id,
                             'attribute_value_ids': [(6, 0, list(value_ids))],
+                            'active': tmpl_id.active,
                         })
                         if len(variants_to_create) > 1000:
                             raise UserError(_(
@@ -730,6 +737,19 @@ class ProductTemplate(models.Model):
         self.ensure_one()
         if not parent_combination:
             return []
+
+        # Search for exclusions without attribute value. This means that the template is not
+        # compatible with the parent combination. If such an exclusion is found, it means that all
+        # attribute values are excluded.
+        if parent_combination:
+            exclusions = self.env['product.template.attribute.exclusion'].search([
+                ('product_tmpl_id', '=', self.id),
+                ('value_ids', '=', False),
+                ('product_template_attribute_value_id', 'in', parent_combination.ids),
+            ], limit=1)
+            if exclusions:
+                return self.mapped('attribute_line_ids.product_template_value_ids').ids
+
         return [
             value_id
             for filter_line in parent_combination.mapped('exclude_for').filtered(
@@ -923,8 +943,10 @@ class ProductTemplate(models.Model):
         if not self.active:
             return _("The product template is archived so no combination is possible.")
 
-        ptal_stack = [self._get_valid_product_template_attribute_lines()]
-        combination_stack = [self.env['product.template.attribute.value']]
+        necessary_values = necessary_values or self.env['product.template.attribute.value']
+        necessary_attributes = necessary_values.mapped('attribute_id')
+        ptal_stack = [self.valid_product_template_attribute_line_ids.filtered(lambda ptal: ptal.attribute_id not in necessary_attributes)]
+        combination_stack = [necessary_values]
 
         # keep going while we have attribute lines to test
         while len(ptal_stack):
@@ -933,7 +955,7 @@ class ProductTemplate(models.Model):
 
             if not attribute_lines:
                 # full combination, if it's possible return it, otherwise skip it
-                if self._is_combination_possible(combination, parent_combination) and all(v in combination for v in (necessary_values or [])):
+                if self._is_combination_possible(combination, parent_combination):
                     yield(combination)
             else:
                 # we have remaining attribute lines to consider
