@@ -288,7 +288,7 @@ class MailThread(models.AbstractModel):
 
         # track values
         if not self._context.get('mail_notrack'):
-            if 'lang' not in self._context:
+            if not self._context.get('lang'):
                 track_threads = threads.with_context(lang=self.env.user.lang)
             else:
                 track_threads = threads
@@ -694,6 +694,10 @@ class MailThread(models.AbstractModel):
             params['token'] = token
 
         link = '%s?%s' % (base_link, url_encode(params))
+
+        if self and hasattr(self, 'get_base_url'):
+            link = self[0].get_base_url() + link
+
         return link
 
     @api.multi

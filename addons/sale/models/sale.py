@@ -220,7 +220,10 @@ class SaleOrder(models.Model):
             if not order.company_id:
                 order.currency_rate = order.currency_id.with_context(date=order.date_order).rate or 1.0
                 continue
-            order.currency_rate = self.env['res.currency']._get_conversion_rate(order.company_id.currency_id, order.currency_id, order.company_id, order.date_order)
+            elif order.company_id.currency_id and order.currency_id:  # the following crashes if any one is undefined
+                order.currency_rate = self.env['res.currency']._get_conversion_rate(order.company_id.currency_id, order.currency_id, order.company_id, order.date_order)
+            else:
+                order.currency_rate = 1.0
 
     def _compute_access_url(self):
         super(SaleOrder, self)._compute_access_url()
@@ -1043,7 +1046,8 @@ class SaleOrderLine(models.Model):
         for line in self:
             fpos = line.order_id.fiscal_position_id or line.order_id.partner_id.property_account_position_id
             # If company_id is set, always filter taxes by the company
-            taxes = line.product_id.taxes_id.filtered(lambda r: not line.company_id or r.company_id == line.company_id)
+            line_company_id = line.company_id or line.order_id.company_id
+            taxes = line.product_id.taxes_id.filtered(lambda r: not line_company_id or r.company_id == line_company_id)
             line.tax_id = fpos.map_tax(taxes, line.product_id, line.order_id.partner_shipping_id) if fpos else taxes
 
     @api.model
@@ -1459,7 +1463,7 @@ class SaleOrderLine(models.Model):
         if currency != self.order_id.pricelist_id.currency_id:
             base_price = currency._convert(
                 base_price, self.order_id.pricelist_id.currency_id,
-                self.order_id.company_id, self.order_id.date_order or fields.Date.today())
+                self.order_id.company_id or self.env.user.company_id, self.order_id.date_order or fields.Date.today())
         # negative discounts (= surcharge) are included in the display price
         return max(base_price, final_price)
 
@@ -1642,7 +1646,7 @@ class SaleOrderLine(models.Model):
                 # we need new_list_price in the same currency as price, which is in the SO's pricelist's currency
                 new_list_price = currency._convert(
                     new_list_price, self.order_id.pricelist_id.currency_id,
-                    self.order_id.company_id, self.order_id.date_order or fields.Date.today())
+                    self.order_id.company_id or self.env.user.company_id, self.order_id.date_order or fields.Date.today())
             discount = (new_list_price - price) / new_list_price * 100
             if (discount > 0 and new_list_price > 0) or (discount < 0 and new_list_price < 0):
                 self.discount = discount

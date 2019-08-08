@@ -505,16 +505,25 @@ class HolidaysRequest(models.Model):
     @api.constrains('holiday_status_id', 'date_to', 'date_from')
     def _check_leave_type_validity(self):
         for leave in self:
+            vstart = leave.holiday_status_id.validity_start
+            vstop  = leave.holiday_status_id.validity_stop
+            dfrom  = leave.date_from
+            dto    = leave.date_to
             if leave.holiday_status_id.validity_start and leave.holiday_status_id.validity_stop:
-                vstart = leave.holiday_status_id.validity_start
-                vstop  = leave.holiday_status_id.validity_stop
-                dfrom  = leave.date_from
-                dto    = leave.date_to
-
                 if dfrom and dto and (dfrom.date() < vstart or dto.date() > vstop):
                     raise UserError(
                         _('You can take %s only between %s and %s') % (
                             leave.holiday_status_id.display_name, leave.holiday_status_id.validity_start, leave.holiday_status_id.validity_stop))
+            elif leave.holiday_status_id.validity_start:
+                if dfrom and (dfrom.date() < vstart):
+                    raise UserError(
+                        _('You can take %s from %s') % (
+                            leave.holiday_status_id.display_name, leave.holiday_status_id.validity_start))
+            elif leave.holiday_status_id.validity_stop:
+                if dto and (dto.date() > vstop):
+                    raise UserError(
+                        _('You can take %s until %s') % (
+                            leave.holiday_status_id.display_name, leave.holiday_status_id.validity_stop))
 
     @api.model
     def create(self, values):
@@ -523,6 +532,8 @@ class HolidaysRequest(models.Model):
         if not values.get('department_id'):
             values.update({'department_id': self.env['hr.employee'].browse(employee_id).department_id.id})
         holiday = super(HolidaysRequest, self.with_context(mail_create_nolog=True, mail_create_nosubscribe=True)).create(values)
+        if self._context.get('import_file'):
+            holiday._onchange_leave_dates()
         if not self._context.get('leave_fast_create'):
             holiday.add_follower(employee_id)
             if 'employee_id' in values:
