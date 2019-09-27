@@ -12,13 +12,14 @@
 # Quim - eccit <quim@eccit.com>, 2019
 # Manel Fernandez <manelfera@outlook.com>, 2019
 # M Palau <mpalau@tda.ad>, 2019
+# Jesus Ramoneda <chusamo@gmail.com>, 2019
 # Arnau Ros, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-10 09:57+0000\n"
+"POT-Creation-Date: 2019-08-08 13:35+0000\n"
 "PO-Revision-Date: 2018-08-24 09:14+0000\n"
 "Last-Translator: Arnau Ros, 2019\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
@@ -460,6 +461,8 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Import</span>\n"
+"<span groups=\"account.group_show_line_subtotals_tax_included\">Preu Total</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -470,6 +473,8 @@ msgstr "<span name=\"button_import_placeholder\"/> Extractes"
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "<span role=\"separator\">New</span>"
 msgstr ""
+"Nou\n"
+" "
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -479,7 +484,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
 msgid "<span role=\"separator\">View</span>"
-msgstr ""
+msgstr "<span role=\"separator\">Vuere</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.account_journal_dashboard_kanban_view
@@ -504,7 +509,7 @@ msgstr "<span> A </span>"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
 msgid "<span>Amount Paid</span>"
-msgstr ""
+msgstr "<span>Import Pagat</span>"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_payment_receipt_document
@@ -841,7 +846,6 @@ msgstr ""
 #, python-format
 msgid ""
 "A user cannot have both Tax B2B and Tax B2C.\n"
-"Problematic user(s): %s\n"
 "You should go in General Settings, and choose to display Product Prices\n"
 "either in 'Tax-Included' or in 'Tax-Excluded' mode\n"
 "(or switch twice the mode if you are already in the desired one)."
@@ -899,7 +903,7 @@ msgstr ""
 #. module: account
 #: model:ir.model,name:account.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Plantilla de gràfic de comptes"
 
 #. module: account
 #: model:ir.model,name:account.model_account_common_report
@@ -1008,7 +1012,7 @@ msgstr "Compte a cobrar"
 #. module: account
 #: model:ir.model,name:account.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "Widget de reconciliació del compte"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_fiscal_position_account_template__account_src_id
@@ -1330,7 +1334,7 @@ msgstr "Afegir nota d'abonament"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__add_sign
 msgid "Add Sign"
-msgstr ""
+msgstr "Afegir signatura"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.onboarding_bank_account_step
@@ -1799,7 +1803,7 @@ msgstr "Compte analític"
 #: model:ir.ui.menu,name:account.account_analytic_group_menu
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Analytic Account Groups"
-msgstr ""
+msgstr "Grups de comptes analítics"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_config_settings__group_analytic_accounting
@@ -2370,7 +2374,7 @@ msgstr "Basat en Pagament"
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.res_config_settings_view_form
 msgid "Batch Payments"
-msgstr ""
+msgstr "Pagaments de lots"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_journal__belongs_to_company
@@ -4154,6 +4158,12 @@ msgid ""
 msgstr "Diferència entre el saldo final calculat i l'especificat."
 
 #. module: account
+#: code:addons/account/models/account_move.py:408
+#, python-format
+msgid "Difference debit - credit: "
+msgstr ""
+
+#. module: account
 #: model:ir.model,name:account.model_digest_digest
 msgid "Digest"
 msgstr "Digerir"
@@ -4253,7 +4263,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_line__display_type
 msgid "Display Type"
-msgstr ""
+msgstr "Tipus de visualització"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_tax_template__description
@@ -4265,6 +4275,7 @@ msgstr "Mostra en factures"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
+"Sense accés, omet aquesta informació per a usuaris amb correu electrònic"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__auto_delete_message
@@ -5060,7 +5071,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__has_error
 #: model:ir.model.fields,help:account.field_account_invoice_send__has_error
 msgid "Has error"
-msgstr ""
+msgstr "Té un error"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_abstract_payment__hide_payment_method
@@ -5501,6 +5512,11 @@ msgstr ""
 msgid ""
 "Incoterms are used to divide transaction costs and responsibilities between "
 "buyer and seller."
+msgstr ""
+
+#. module: account
+#: model:ir.model.fields,help:account.field_account_move_line__tax_line_id
+msgid "Indicates that this journal item is a tax line"
 msgstr ""
 
 #. module: account
@@ -6444,7 +6460,7 @@ msgstr "Data de l'última conciliació de factures i pagaments"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__layout
 msgid "Layout"
-msgstr ""
+msgstr "Disseny"
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_form
@@ -6575,7 +6591,7 @@ msgstr "Varis"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__mail_activity_type_id
 msgid "Mail Activity Type"
-msgstr ""
+msgstr "Tipus d'activitat de correu electrònic"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__mailing_list_ids
@@ -6774,7 +6790,7 @@ msgstr "Nom de registre del missatge"
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_send__description
 msgid "Message description: either the subject, or the beginning of the body"
-msgstr ""
+msgstr "Descripció del missatge: Ja sigui l'assumpte o l'inici del cos"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_res_partner__invoice_warn_msg
@@ -6830,12 +6846,12 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__moderator_id
 msgid "Moderated By"
-msgstr ""
+msgstr "Moderat per"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__moderation_status
 msgid "Moderation Status"
-msgstr ""
+msgstr "Estat de moderació"
 
 #. module: account
 #. openerp-web
@@ -6959,7 +6975,7 @@ msgstr "Acció requerida"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__need_moderation
 msgid "Need moderation"
-msgstr ""
+msgstr "Necessita moderació"
 
 #. module: account
 #. openerp-web
@@ -7558,7 +7574,7 @@ msgstr "Missatge pare"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_group__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "Ruta arrel"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_move_line__parent_state
@@ -7995,7 +8011,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.report_invoice_document
 msgid "Please use the following communication for your payment :"
-msgstr ""
+msgstr "Si us plau utilitzeu la següent comunicació per al vostre pagament:"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice__access_url
@@ -8272,7 +8288,7 @@ msgstr "Quantitat:"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__rating_value
 msgid "Rating Value"
-msgstr ""
+msgstr "Valor de la qualificació"
 
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_refund__description
@@ -8521,7 +8537,7 @@ msgstr "Model de document relacionat"
 #. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_send__rating_ids
 msgid "Related ratings"
-msgstr ""
+msgstr "Valoracions relacionades"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice__residual_company_signed
@@ -8695,7 +8711,7 @@ msgstr ""
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.onboarding_chart_of_account_step
 msgid "Review"
-msgstr ""
+msgstr "Revisió"
 
 #. module: account
 #: selection:res.company,tax_calculation_rounding_method:0
@@ -9737,6 +9753,11 @@ msgid "Tax display B2C"
 msgstr "Impost B2C"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_invoice__amount_tax_signed
+msgid "Tax in Invoice Currency"
+msgstr ""
+
+#. module: account
 #: sql_constraint:account.tax:0 sql_constraint:account.tax.template:0
 msgid "Tax names must be unique !"
 msgstr "El nom dels impostos han de ser únics!"
@@ -9771,7 +9792,6 @@ msgstr ""
 #: model:account.tax.group,name:account.tax_group_taxes
 #: model:ir.actions.act_window,name:account.action_tax_form
 #: model:ir.model.fields,field_description:account.field_account_invoice_line__invoice_line_tax_ids
-#: model:ir.model.fields,field_description:account.field_account_move_line__tax_ids
 #: model:ir.ui.menu,name:account.menu_action_tax_form
 #: model_terms:ir.ui.view,arch_db:account.invoice_form
 #: model_terms:ir.ui.view,arch_db:account.invoice_supplier_form
@@ -9782,6 +9802,7 @@ msgid "Taxes"
 msgstr "Impostos"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_move_line__tax_ids
 #: model_terms:ir.ui.view,arch_db:account.view_move_form
 msgid "Taxes Applied"
 msgstr ""
@@ -9790,6 +9811,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account.view_account_position_template_form
 msgid "Taxes Mapping"
 msgstr "Mapa de relacions d'impostos"
+
+#. module: account
+#: model:ir.model.fields,help:account.field_account_move_line__tax_ids
+msgid "Taxes that apply on the base amount"
+msgstr ""
 
 #. module: account
 #: model_terms:ir.ui.view,arch_db:account.view_account_tax_template_search
@@ -9819,7 +9845,7 @@ msgstr ""
 #. module: account
 #: model:ir.model.fields,help:account.field_account_invoice_line__display_type
 msgid "Technical field for UX purpose."
-msgstr ""
+msgstr "Camp tècnic amb finalitat UX"
 
 #. module: account
 #: model:ir.model.fields,help:account.field_account_move_line__balance
@@ -11231,6 +11257,11 @@ msgid "Untaxed Amount in Company Currency"
 msgstr "Import en la moneda de la companyia sense impostos"
 
 #. module: account
+#: model:ir.model.fields,field_description:account.field_account_invoice__amount_untaxed_invoice_signed
+msgid "Untaxed Amount in Invoice Currency"
+msgstr ""
+
+#. module: account
 #: model:ir.model.fields,field_description:account.field_account_invoice_report__price_total
 msgid "Untaxed Total"
 msgstr "Total lliure d'impostos"
@@ -11678,11 +11709,20 @@ msgstr ""
 
 #. module: account
 #: sql_constraint:account.move.line:0
-msgid "Wrong credit or debit value in accounting entry !"
-msgstr "Valor erroni del deure o haver en l'assentament comptable !"
+msgid ""
+"Wrong credit or debit value in accounting entry! Credit and debit should be "
+"positive."
+msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:921
+#: sql_constraint:account.move.line:0
+msgid ""
+"Wrong credit or debit value in accounting entry! Credit or debit should be "
+"zero."
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account_move.py:944
 #, python-format
 msgid "You are trying to reconcile some entries that are already reconciled."
 msgstr ""
@@ -11741,7 +11781,7 @@ msgid ""
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_move.py:370
+#: code:addons/account/models/account_move.py:373
 #, python-format
 msgid ""
 "You cannot add/modify entries prior to and inclusive of the lock date %s"
@@ -11750,7 +11790,7 @@ msgstr ""
 "bloqueig %s"
 
 #. module: account
-#: code:addons/account/models/account_move.py:372
+#: code:addons/account/models/account_move.py:375
 #, python-format
 msgid ""
 "You cannot add/modify entries prior to and inclusive of the lock date %s. "
@@ -11761,7 +11801,7 @@ msgstr ""
 "amb el rol 'Assessor'"
 
 #. module: account
-#: code:addons/account/models/company.py:267
+#: code:addons/account/models/company.py:283
 #, python-format
 msgid ""
 "You cannot change the currency of the company since some journal items "
@@ -11770,7 +11810,7 @@ msgstr ""
 "No es pot canviar la moneda de l'empresa quan ja hi ha alguns elements"
 
 #. module: account
-#: code:addons/account/models/account.py:310
+#: code:addons/account/models/account.py:317
 #, python-format
 msgid ""
 "You cannot change the owner company of an account that already contains "
@@ -11780,7 +11820,15 @@ msgstr ""
 "assentaments."
 
 #. module: account
-#: code:addons/account/models/account_move.py:688
+#: code:addons/account/models/account_invoice.py:1929
+#, python-format
+msgid ""
+"You cannot change the type of an invoice line. Instead you should delete the"
+" current line and create a new line of the proper type."
+msgstr ""
+
+#. module: account
+#: code:addons/account/models/account_move.py:703
 #, python-format
 msgid ""
 "You cannot create journal items with a secondary currency without filling "
@@ -11788,7 +11836,7 @@ msgid ""
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/company.py:171
+#: code:addons/account/models/company.py:187
 #, python-format
 msgid ""
 "You cannot define stricter conditions on advisors than on users. Please make"
@@ -11799,13 +11847,13 @@ msgstr ""
 "establerta abans que la dels usuaris. "
 
 #. module: account
-#: code:addons/account/models/account_payment.py:583
+#: code:addons/account/models/account_payment.py:611
 #, python-format
 msgid "You cannot delete a payment that is already posted."
 msgstr ""
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:729
+#: code:addons/account/models/account_invoice.py:786
 #, python-format
 msgid ""
 "You cannot delete an invoice after it has been validated (and received a "
@@ -11817,7 +11865,7 @@ msgstr ""
 "contingut, i llavors reconfirmar-la."
 
 #. module: account
-#: code:addons/account/models/account_invoice.py:727
+#: code:addons/account/models/account_invoice.py:784
 #, python-format
 msgid ""
 "You cannot delete an invoice which is not draft or cancelled. You should "

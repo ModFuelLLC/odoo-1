@@ -8,17 +8,17 @@
 # Dejan Sraka <dejan.sraka@picolabs.si>, 2019
 # laznikd <laznik@mentis.si>, 2019
 # matjaz k <matjaz@mentis.si>, 2019
-# Matjaz Mozetic <m.mozetic@matmoz.si>, 2019
 # Boris Kodelja <boris@hbs.si>, 2019
-# Grega Vavtar <grega@hbs.si>, 2019
+# Matjaz Mozetic <m.mozetic@matmoz.si>, 2019
+# Tadej Lupšina <tadej@hbs.si>, 2019
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-09 10:32+0000\n"
+"POT-Creation-Date: 2019-08-08 13:50+0000\n"
 "PO-Revision-Date: 2018-08-24 09:22+0000\n"
-"Last-Translator: Grega Vavtar <grega@hbs.si>, 2019\n"
+"Last-Translator: Tadej Lupšina <tadej@hbs.si>, 2019\n"
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +32,12 @@ msgstr ""
 #, python-format
 msgid "%d days overdue"
 msgstr "%d dni preko roka"
+
+#. module: portal
+#: code:addons/portal/controllers/portal.py:277
+#, python-format
+msgid "%s is not the reference of a report"
+msgstr ""
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_show_sign_in
@@ -194,7 +200,7 @@ msgstr ""
 "<tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "<div>\n"
 "Spoštovani ${object.user_id.name or ''},<br/> <br/>\n"
-"Dobili ste dostop do spletnega portala podjetja ${object.user_id.company_id.name}.<br/>\n"
+"Dobili ste dostop do spletnega portala ${object.user_id.company_id.name}.<br/>\n"
 "Pred prvo prijavo si spremenite oz. ustvarite geslo.\n"
 "Vaši prijavni podatki so:\n"
 "<ul>\n"
@@ -265,7 +271,7 @@ msgstr "Opozorilo za dostop"
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
 msgid "Add a note"
-msgstr ""
+msgstr "Dodaj opombo"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_share_wizard
@@ -305,6 +311,13 @@ msgstr "Prekliči"
 #, python-format
 msgid ""
 "Changing VAT number is not allowed once document(s) have been issued for "
+"your account. Please contact us directly for this operation."
+msgstr ""
+
+#. module: portal
+#: model_terms:ir.ui.view,arch_db:portal.portal_my_details
+msgid ""
+"Changing company name is not allowed once document(s) have been issued for "
 "your account. Please contact us directly for this operation."
 msgstr ""
 
@@ -464,6 +477,12 @@ msgstr "Na portalu"
 #: code:addons/portal/controllers/portal.py:201
 #, python-format
 msgid "Invalid Email! Please enter a valid email address."
+msgstr ""
+
+#. module: portal
+#: code:addons/portal/controllers/portal.py:272
+#, python-format
+msgid "Invalid report type: %s"
 msgstr ""
 
 #. module: portal
@@ -701,6 +720,12 @@ msgid "There are no comments for now."
 msgstr ""
 
 #. module: portal
+#: code:addons/portal/controllers/portal.py:237
+#, python-format
+msgid "This document does not exist."
+msgstr ""
+
+#. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_back_in_edit_mode
 msgid "This is a preview of the customer portal."
 msgstr ""
@@ -866,7 +891,7 @@ msgstr "Vaše ime"
 #. module: portal
 #: model:mail.template,subject:portal.mail_template_data_portal_welcome
 msgid "Your Odoo account at ${object.user_id.company_id.name}"
-msgstr ""
+msgstr "Vaš račun pri ${object.user_id.company_id.name}"
 
 #. module: portal
 #: model_terms:ir.ui.view,arch_db:portal.portal_contact
